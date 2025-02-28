@@ -17,7 +17,7 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
     GetCharacterMovement()->GravityScale = 1.0f;
     FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("FlipbookComponent"));
     FlipbookComponent->SetupAttachment(RootComponent);
-    
+
     SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
     SpringArmComponent->SetupAttachment(GetRootComponent());
     SpringArmComponent->bUsePawnControlRotation = true;
@@ -26,34 +26,42 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
 
-
 }
 
 
 void ABaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
-
+    
+    FlipbookComponent->SetSimulatePhysics(true);
+    FlipbookComponent->BodyInstance.bLockXTranslation = true;
+    FlipbookComponent->BodyInstance.bLockYTranslation = true;
+    FlipbookComponent->BodyInstance.bLockZTranslation = true;
 }
 
 
 void ABaseCharacter::Jump()
 {
+    
     const auto MovementComponent = Cast<UMyCharacterMovementComponent>(GetCharacterMovement());
     if (MovementComponent)
     {
+        FlipbookComponent->BodyInstance.SetLinearVelocity(FVector::UpVector * 600.0f, true);
         UE_LOG(LogTemp, Warning, TEXT("Jumping!"));
-        Super::Jump();
     }
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("Cannot jump: character is falling."));
     }
+    Super::Jump();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    
+    const FVector ForwardMovement = FVector(0.0f , 90.0f * DeltaTime, 0.0f); 
+    AddActorWorldOffset(ForwardMovement, true); 
 
 }
 
