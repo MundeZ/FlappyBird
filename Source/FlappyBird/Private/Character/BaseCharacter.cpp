@@ -2,8 +2,10 @@
 
 
 #include "Character/BaseCharacter.h"
-
+#include "PaperFlipbookComponent.h"
+#include "Camera/CameraComponent.h"
 #include "Components/MyCharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
@@ -15,6 +17,16 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
     GetCharacterMovement()->GravityScale = 1.0f;
     FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("FlipbookComponent"));
     FlipbookComponent->SetupAttachment(RootComponent);
+    
+    SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+    SpringArmComponent->SetupAttachment(GetRootComponent());
+    SpringArmComponent->bUsePawnControlRotation = true;
+    SpringArmComponent->SocketOffset = FVector(0.0f, 100.0f, 80.0f);
+
+    CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
+    CameraComponent->SetupAttachment(SpringArmComponent);
+
+
 }
 
 
@@ -35,7 +47,7 @@ void ABaseCharacter::Jump()
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("Cannot jump: character is falling. 2"));
+        UE_LOG(LogTemp, Warning, TEXT("Cannot jump: character is falling."));
     }
 }
 

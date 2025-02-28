@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "PaperFlipbookComponent.h"
 #include "BaseCharacter.generated.h"
+
+class USpringArmComponent;
+class UPaperFlipbookComponent;
+class UCameraComponent;
 
 UCLASS()
 class FLAPPYBIRD_API ABaseCharacter : public ACharacter
@@ -15,15 +18,19 @@ class FLAPPYBIRD_API ABaseCharacter : public ACharacter
 public:
     ABaseCharacter(const FObjectInitializer& ObjInit);
 
-protected:
-    virtual void BeginPlay() override;
-
-public:
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-    UPaperFlipbookComponent* FlipbookComponent;
-
     virtual void Jump() override;
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+protected:
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+    UPaperFlipbookComponent* FlipbookComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    USpringArmComponent* SpringArmComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UCameraComponent* CameraComponent;
+    virtual void BeginPlay() override;
+    
 };
