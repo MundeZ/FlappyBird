@@ -3,6 +3,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
+
 ALevelGenerator::ALevelGenerator()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -48,14 +49,25 @@ void ALevelGenerator::GenerateLevel()
                 CurrentSpawnPosition,
                 FRotator::ZeroRotator,
                 SpawnParams
-            );
+                );
+            auto RandPosByZ = FMath::RandBool();
+            auto ObjectPosition = SpawnedActor->GetActorRotation();
+            if (RandPosByZ == true)
+            {
+                ObjectPosition.Roll = 0.0f;
+                SpawnedActor->SetActorRotation(ObjectPosition);
+            }
+            else
+            {
+                ObjectPosition.Roll = 180.0f;
+                SpawnedActor->SetActorRotation(ObjectPosition);
+            }
 
             if (SpawnedActor)
             {
                 // Увеличиваем позицию спавна для следующего объекта
-                CurrentSpawnPosition.Y += Spacing; 
+                CurrentSpawnPosition.Y += Spacing;
                 SpawnedActors.Add(SpawnedActor);
-
                 UE_LOG(LogTemp, Display, TEXT("Spawned actor at: %s"), *CurrentSpawnPosition.ToString());
             }
         }
@@ -80,8 +92,8 @@ void ALevelGenerator::UpdateLevelGeneration(const FVector& CameraPosition)
     if (CameraPosition.Y > CurrentSpawnPosition.Y - Spacing * 2)
     {
         UE_LOG(LogTemp, Display, TEXT("Adding new actor. Camera Position: %s, Next Spawn Position: %s"),
-            *CameraPosition.ToString(), *CurrentSpawnPosition.ToString()
-        );
+               *CameraPosition.ToString(), *CurrentSpawnPosition.ToString()
+            );
         GenerateLevel();
     }
 }
