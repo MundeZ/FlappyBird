@@ -38,7 +38,7 @@ void ABaseCharacter::BeginPlay()
     // Автоматически ищем LevelGenerator, если он не задан вручную
     if (!LevelGenerator)
     {
-        for (TActorIterator<ALevelGenerator> It(GetWorld()); It; ++It)
+        for (TActorIterator<ALevelGenerator> It(GetWorld()); It;)
         {
             LevelGenerator = *It;
             break;
