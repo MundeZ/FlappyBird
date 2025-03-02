@@ -50,6 +50,8 @@ void ALevelGenerator::GenerateLevel()
                 FRotator::ZeroRotator,
                 SpawnParams
                 );
+
+            // Выбираем случайную позицию по Z для генерации
             auto RandPosByZ = FMath::RandBool();
             auto ObjectPosition = SpawnedActor->GetActorRotation();
             if (RandPosByZ == true)
