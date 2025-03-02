@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
+class ALevelGenerator;
 class USpringArmComponent;
 class UPaperFlipbookComponent;
 class UCameraComponent;
@@ -17,7 +18,7 @@ class FLAPPYBIRD_API ABaseCharacter : public ACharacter
 
 public:
     ABaseCharacter(const FObjectInitializer& ObjInit);
-    
+
     virtual void Jump() override;
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -31,7 +32,9 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
-    
+
     virtual void BeginPlay() override;
-    
+
+private:
+    ALevelGenerator* LevelGenerator;
 };
