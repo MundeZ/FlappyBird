@@ -35,6 +35,8 @@ void ABaseCharacter::BeginPlay()
     FlipbookComponent->BodyInstance.bLockYTranslation = true;
     FlipbookComponent->BodyInstance.bLockZTranslation = true;
 
+
+
     // Автоматически ищем LevelGenerator, если он не задан вручную
     if (!LevelGenerator)
     {
@@ -74,6 +76,11 @@ void ABaseCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+    // Запрет передвижения по координате X
+    FVector CurrentLocation = GetActorLocation();
+    CurrentLocation.X = 0.0f;
+    SetActorLocation(CurrentLocation);
+    
     // Смещение персонажа вперёд
     const FVector ForwardMovement = FVector(0.0f, 90.0f * DeltaTime, 0.0f);
     AddActorWorldOffset(ForwardMovement, true);
