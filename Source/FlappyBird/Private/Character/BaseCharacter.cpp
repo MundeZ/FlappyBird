@@ -82,7 +82,7 @@ void ABaseCharacter::Tick(float DeltaTime)
     SetActorLocation(CurrentLocation);
     
     // Смещение персонажа вперёд
-    const FVector ForwardMovement = FVector(0.0f, 90.0f * DeltaTime, 0.0f);
+    const FVector ForwardMovement = FVector(0.0f, 450.0f * DeltaTime, 0.0f);
     AddActorWorldOffset(ForwardMovement, true);
 
     // Получение позиции камеры (через SpringArm)
