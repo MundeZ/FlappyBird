@@ -26,6 +26,11 @@ void ULoseScreenWidget::NativeConstruct()
         UE_LOG(LogTemp, Display, TEXT("Not found ExitButton"))
     }
 
+    if (ReturnToMainMenuButton)
+    {
+        ReturnToMainMenuButton->OnClicked.AddDynamic(this, &ULoseScreenWidget::OnReturnToMainMenu);
+    }
+
     LoadAndDisplayLastScore();
 }
 
@@ -42,6 +47,11 @@ void ULoseScreenWidget::OnExit()
         UGameplayStatics::SetGamePaused(GetWorld(), false);
         UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, false);
     }
+}
+
+void ULoseScreenWidget::OnReturnToMainMenu()
+{
+    UGameplayStatics::OpenLevel(GetWorld(), "MenuLevel");
 }
 
 void ULoseScreenWidget::LoadAndDisplayLastScore()

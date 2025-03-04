@@ -20,6 +20,9 @@ protected:
     UButton* ExitButton;
 
     UPROPERTY(meta=(BindWidget))
+    UButton* ReturnToMainMenuButton;
+
+    UPROPERTY(meta=(BindWidget))
     UTextBlock* ScoreTextBlock;
 
     virtual void NativeConstruct() override;
@@ -30,6 +33,9 @@ private:
 
     UFUNCTION()
     void OnExit();
+
+    UFUNCTION()
+    void OnReturnToMainMenu();
 
     void LoadAndDisplayLastScore();
 };
