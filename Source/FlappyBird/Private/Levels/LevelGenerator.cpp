@@ -78,7 +78,7 @@ void ALevelGenerator::GenerateLevel()
 
 void ALevelGenerator::UpdateLevelGeneration(const FVector& CameraPosition)
 {
-    // Убираем актёров, которые оказались слишком далеко за камерой
+    // Убираем Actor, которые оказались слишком далеко за камерой
     for (AActor* Actor : SpawnedActors)
     {
         if (Actor && Actor->GetActorLocation().Y < CameraPosition.Y - Spacing * 3)
@@ -90,7 +90,7 @@ void ALevelGenerator::UpdateLevelGeneration(const FVector& CameraPosition)
         }
     }
 
-    // Проверяем, нужно ли добавить новый объект перед камерой
+    // Проверяем, нужно ли добавить новый объект перед камерой, если нужно - добавляем
     if (CameraPosition.Y > CurrentSpawnPosition.Y - Spacing * 2)
     {
         UE_LOG(LogTemp, Display, TEXT("Adding new actor. Camera Position: %s, Next Spawn Position: %s"),
@@ -98,9 +98,4 @@ void ALevelGenerator::UpdateLevelGeneration(const FVector& CameraPosition)
             );
         GenerateLevel();
     }
-}
-
-void ALevelGenerator::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
 }

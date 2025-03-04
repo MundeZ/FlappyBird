@@ -1,6 +1,6 @@
 #include "UI/LoseScreenWidget.h"
 #include "Components/Button.h"
-#include "Components/TextBlock.h"  
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/MySaveGame.h"
 
@@ -53,7 +53,7 @@ void ULoseScreenWidget::LoadAndDisplayLastScore()
         UE_LOG(LogTemp, Warning, TEXT("SaveGame not found or no scores available."));
         return;
     }
-    
+
     int32 LastScore = SaveGameInstance->Scores.Last();
 
     if (ScoreTextBlock)

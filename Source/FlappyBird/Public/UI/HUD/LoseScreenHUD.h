@@ -6,9 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "LoseScreenHUD.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class FLAPPYBIRD_API ALoseScreenHUD : public AHUD
 {
@@ -17,6 +15,6 @@ class FLAPPYBIRD_API ALoseScreenHUD : public AHUD
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     TSubclassOf<UUserWidget> LoseScreenWidgetClass;
-    
+
     virtual void BeginPlay() override;
 };

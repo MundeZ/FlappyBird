@@ -6,9 +6,6 @@
 #include "GameFramework/HUD.h"
 #include "MenuHUD.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class FLAPPYBIRD_API AMenuHUD : public AHUD
 {

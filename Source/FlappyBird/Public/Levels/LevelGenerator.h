@@ -13,10 +13,8 @@ class FLAPPYBIRD_API ALevelGenerator : public AActor
 
 public:
     ALevelGenerator();
-
-    void GenerateLevel();
+    
     void UpdateLevelGeneration(const FVector& CameraPosition);
-    virtual void Tick(float DeltaTime) override;
 
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level Generator")
@@ -30,4 +28,6 @@ protected:
 private:
     FVector CurrentSpawnPosition;
     TArray<AActor*> SpawnedActors;
+
+    void GenerateLevel();
 };
