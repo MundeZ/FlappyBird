@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Levels/MenuGameModeBase.h"
+#include "GameMode/MenuGameModeBase.h"
 
-#include "Levels/MenuPlayerController.h"
-#include "UI/MenuHUD.h"
+#include "Controllers/MenuPlayerController.h"
+#include "UI/HUD/MenuHUD.h"
 
 AMenuGameModeBase::AMenuGameModeBase()
 {

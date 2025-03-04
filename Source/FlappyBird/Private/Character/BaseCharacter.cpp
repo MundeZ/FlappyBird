@@ -5,7 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Levels/LevelGenerator.h"
 #include "EngineUtils.h"
-#include "Character/MyPlayerController.h"
+#include "Controllers//MyPlayerController.h"
 #include "Components/BoxComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/MySaveGame.h"

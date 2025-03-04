@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/LoseScreenHUD.h"
+#include "UI/HUD/LoseScreenHUD.h"
 
 #include "Blueprint/UserWidget.h"
 

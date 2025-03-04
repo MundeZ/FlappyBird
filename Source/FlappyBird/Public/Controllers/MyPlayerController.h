@@ -13,6 +13,4 @@ UCLASS()
 class FLAPPYBIRD_API AMyPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-    
-
 };
