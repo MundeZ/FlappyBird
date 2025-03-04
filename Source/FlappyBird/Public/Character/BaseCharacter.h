@@ -5,6 +5,7 @@
 #include "BaseCharacter.generated.h"
 
 
+class UMovementComponent;
 class ALevelGenerator;
 class UHealthComponent;
 class USpringArmComponent;
@@ -29,16 +30,18 @@ public:
     void SaveNewScore(float NewScore);
     virtual void Tick(float DeltaTime) override;
     virtual void Jump() override;
-    void SetInputMode(const FInputModeUIOnly& InputModeUIOnly);
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 protected:
     virtual void BeginPlay() override;
 
-    // Компоненты
+    // Подключаем Компоненты
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UPaperFlipbookComponent* FlipbookComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UMovementComponent* MovementComponent;
+    
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USpringArmComponent* SpringArmComponent;
 
@@ -47,10 +50,7 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UHealthComponent* HealthComponent;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-    UTextRenderComponent* HealthTextComponent;
-
+    
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
     UBoxComponent* CollisionBox;
 

@@ -6,9 +6,7 @@
 #include "GameFramework/SaveGame.h"
 #include "MySaveGame.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class FLAPPYBIRD_API UMySaveGame : public USaveGame
 {

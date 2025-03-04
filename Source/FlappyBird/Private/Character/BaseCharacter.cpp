@@ -21,14 +21,11 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
     FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("FlipbookComponent"));
     FlipbookComponent->SetupAttachment(RootComponent);
 
+    // Создаем MovementComponent
+    MovementComponent = CreateDefaultSubobject<UMyCharacterMovementComponent>(TEXT("MyCharacterMovementComponent"));
+    
     // Добавляем HealthComponent
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
-    HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
-    HealthTextComponent->SetupAttachment(RootComponent);
-    HealthTextComponent->SetOwnerNoSee(true);
-
-    UE_LOG(LogTemp, Log, TEXT("HealthComponent created in constructor: %s"), *GetName()); 
-
     
     // Добавляем SpringArm
     SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
@@ -36,7 +33,7 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
     SpringArmComponent->bUsePawnControlRotation = true;
     SpringArmComponent->SocketOffset = FVector(0.0f, 100.0f, 80.0f);
 
-    // Добавляем Камеру
+    // Добавляем Камеру и приваязываем к SpringArmComponent
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
 
@@ -67,6 +64,7 @@ void ABaseCharacter::BeginPlay()
         UE_LOG(LogTemp, Error, TEXT("PlayerController not found!"));
     }
 
+    // Настройки для компонента
     FlipbookComponent->SetSimulatePhysics(true);
     FlipbookComponent->SetEnableGravity(true);
     GetCharacterMovement()->GravityScale = 1.0f;
@@ -78,7 +76,7 @@ void ABaseCharacter::BeginPlay()
     // Автоматический поиск генератора уровня
     if (!LevelGenerator)
     {
-        for (TActorIterator<ALevelGenerator> It(GetWorld()); It; ++It)
+        for (TActorIterator<ALevelGenerator> It(GetWorld()); It;)
         {
             LevelGenerator = *It;
             break;
@@ -99,15 +97,6 @@ void ABaseCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    // Ограничиваем движение по оси X
-    FVector CurrentLocation = GetActorLocation();
-    CurrentLocation.X = 0.0f;
-    SetActorLocation(CurrentLocation);
-
-    // Перемещение персонажа вперёд
-    const FVector ForwardMovement = FVector(0.0f, 450.0f * DeltaTime, 0.0f);
-    AddActorWorldOffset(ForwardMovement, true);
-
     // Обновляем уровень
     if (LevelGenerator)
     {
@@ -126,8 +115,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-    SetInputMode(FInputModeUIOnly());
+    
     check(PlayerInputComponent);
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABaseCharacter::Jump);
 }
@@ -135,23 +123,16 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ABaseCharacter::Jump()
 {
     Super::Jump();
-    const auto MovementComponent = Cast<UMyCharacterMovementComponent>(GetCharacterMovement());
     if (MovementComponent)
     {
-        FlipbookComponent->BodyInstance.SetLinearVelocity(FVector::UpVector * 600.0f, true);
+        FlipbookComponent->BodyInstance.SetLinearVelocity(FVector::UpVector, true);
         JumpCount++;
         UE_LOG(LogTemp, Warning, TEXT("JumpCount: %d"), JumpCount);
-
     }
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("Cannot jump: character is falling."));
     }
-}
-
-void ABaseCharacter::SetInputMode(const FInputModeUIOnly& InputModeUIOnly)
-{
-
 }
 
 void ABaseCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
