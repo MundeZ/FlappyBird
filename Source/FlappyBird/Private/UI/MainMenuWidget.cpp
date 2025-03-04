@@ -3,6 +3,7 @@
 
 #include "UI/MainMenuWidget.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "Components/MySaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -23,6 +24,7 @@ void UMainMenuWidget::NativeConstruct()
         ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnExit);
     }
 
+    LoadScore();
     LoadAndDisplayScores();
     GetHighScore();
 }
@@ -49,9 +51,13 @@ void UMainMenuWidget::OnExit()
     }
 }
 
+void UMainMenuWidget::LoadScore()
+{
+    SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("ScoreSlot"), 0));
+}
+
 void UMainMenuWidget::LoadAndDisplayScores()
 {
-    UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("ScoreSlot"), 0));
 
     if (!SaveGameInstance)
     {
@@ -76,8 +82,6 @@ void UMainMenuWidget::LoadAndDisplayScores()
 
 void UMainMenuWidget::GetHighScore()
 {
-    UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("ScoreSlot"), 0));
-
     if (!SaveGameInstance || SaveGameInstance->Scores.Num() == 0)
     {
         UE_LOG(LogTemp, Warning, TEXT("SaveGame not found or empty."));
@@ -87,8 +91,7 @@ void UMainMenuWidget::GetHighScore()
         }
         return;
     }
-
-    // Найти максимальный результат
+    
     const int32 HighScore = FMath::Max<int32>(SaveGameInstance->Scores);
 
     if (HightScoreTextBlock)

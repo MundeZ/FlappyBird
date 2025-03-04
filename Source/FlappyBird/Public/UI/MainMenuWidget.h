@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/TextBlock.h"
 #include "MainMenuWidget.generated.h"
 
 class UButton;
+class UTextBlock;
+class UMySaveGame;
 
 UCLASS()
 class FLAPPYBIRD_API UMainMenuWidget : public UUserWidget
@@ -27,6 +28,8 @@ protected:
     UPROPERTY(meta=(BindWidget))
     UTextBlock* ScoreTextBlock;
     
+    UMySaveGame* SaveGameInstance;
+    
     virtual void NativeConstruct() override;
 
 private:
@@ -35,6 +38,8 @@ private:
 
     UFUNCTION()
     void OnExit();
+
+    void LoadScore();
     void LoadAndDisplayScores();
     void GetHighScore();
 };
