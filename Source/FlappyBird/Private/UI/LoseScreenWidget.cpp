@@ -44,28 +44,6 @@ void ULoseScreenWidget::OnExit()
     }
 }
 
-void ULoseScreenWidget::LoadAndDisplayScores()
-{
-    UMySaveGame * SaveGameInstance = Cast<UMySaveGame >(UGameplayStatics::LoadGameFromSlot(TEXT("ScoreSlot"), 0));
-
-    if (!SaveGameInstance)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("SaveGame not found, creating new one."));
-        SaveGameInstance = NewObject<UMySaveGame>();
-    }
-
-    FString ScoreText;
-    for (int32 Score : SaveGameInstance->Scores)
-    {
-        ScoreText += FString::Printf(TEXT("%d\n"), Score);
-    }
-
-    if (ScoreTextBlock)
-    {
-        ScoreTextBlock->SetText(FText::FromString(ScoreText));
-    }
-}
-
 void ULoseScreenWidget::LoadAndDisplayLastScore()
 {
     UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("ScoreSlot"), 0));

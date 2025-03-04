@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "MainMenuWidget.generated.h"
 
 class UButton;
@@ -20,6 +21,12 @@ protected:
     UPROPERTY(meta=(BindWidget))
     UButton* ExitButton;
 
+    UPROPERTY(meta=(BindWidget))
+    UTextBlock* HightScoreTextBlock;
+
+    UPROPERTY(meta=(BindWidget))
+    UTextBlock* ScoreTextBlock;
+    
     virtual void NativeConstruct() override;
 
 private:
@@ -28,4 +35,6 @@ private:
 
     UFUNCTION()
     void OnExit();
+    void LoadAndDisplayScores();
+    void GetHighScore();
 };

@@ -141,6 +141,7 @@ void ABaseCharacter::Jump()
         FlipbookComponent->BodyInstance.SetLinearVelocity(FVector::UpVector * 600.0f, true);
         JumpCount++;
         UE_LOG(LogTemp, Warning, TEXT("JumpCount: %d"), JumpCount);
+
     }
     else
     {
