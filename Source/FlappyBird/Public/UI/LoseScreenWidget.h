@@ -1,9 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"  
 #include "LoseScreenWidget.generated.h"
 
 class UButton;
@@ -19,6 +18,9 @@ protected:
 
     UPROPERTY(meta=(BindWidget))
     UButton* ExitButton;
+    
+    UPROPERTY(meta=(BindWidget))
+    UTextBlock* ScoreTextBlock;  
 
     virtual void NativeConstruct() override;
 
@@ -28,4 +30,7 @@ private:
 
     UFUNCTION()
     void OnExit();
+
+    void LoadAndDisplayScores();
+    void LoadAndDisplayLastScore();
 };

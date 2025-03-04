@@ -8,6 +8,7 @@
 #include "Character/MyPlayerController.h"
 #include "Components/BoxComponent.h"
 #include "Components/HealthComponent.h"
+#include "Components/MySaveGame.h"
 #include "Components/TextRenderComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -138,7 +139,8 @@ void ABaseCharacter::Jump()
     if (MovementComponent)
     {
         FlipbookComponent->BodyInstance.SetLinearVelocity(FVector::UpVector * 600.0f, true);
-        UE_LOG(LogTemp, Warning, TEXT("Jumping!"));
+        JumpCount++;
+        UE_LOG(LogTemp, Warning, TEXT("JumpCount: %d"), JumpCount);
     }
     else
     {
@@ -164,7 +166,10 @@ void ABaseCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
             UE_LOG(LogTemp, Warning, TEXT("HIT! Overlapped with: %s"), *OtherActor->GetName());
             if (HealthComponent->IsDead())
             {
+                UE_LOG(LogTemp, Warning, TEXT("Saved jump count: %d"), JumpCount);
+                SaveNewScore(JumpCount);
                 Destroy();
+                JumpCount = 0;
                 const FName LevelName = "LoseLevel";
                 UGameplayStatics::OpenLevel(GetWorld(), LevelName);
                 UE_LOG(LogTemp, Warning, TEXT("Flappy DEAD!"));
@@ -176,3 +181,20 @@ void ABaseCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
         }
     }
 }
+
+void ABaseCharacter::SaveNewScore(float NewScore)
+{
+    UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("ScoreSlot"), 0));
+
+    if (!SaveGameInstance)
+    {
+        SaveGameInstance = NewObject<UMySaveGame>();
+    }
+
+    // Добавляем новое очко
+    SaveGameInstance->Scores.Add(NewScore);
+
+    // Сохраняем в слот
+    UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("ScoreSlot"), 0);
+}
+
