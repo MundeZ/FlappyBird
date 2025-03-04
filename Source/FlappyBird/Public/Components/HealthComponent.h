@@ -18,13 +18,10 @@ public:
     bool IsDead() const;
     float GetHealth() const;
     float MinusHP(float Amount);
-    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Health", meta=(ClampMin="0.0", ClampMax="100.0"))
     float MaxHealth = 100.0f;
-
-    virtual void BeginPlay() override;
 
 private:
     float Health = 1.0f;

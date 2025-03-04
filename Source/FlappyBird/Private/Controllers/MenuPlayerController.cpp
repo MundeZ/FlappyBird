@@ -7,6 +7,7 @@ void AMenuPlayerController::BeginPlay()
 {
     Super::BeginPlay();
 
+    // Включаем курсор
     SetInputMode(FInputModeUIOnly());
     bShowMouseCursor = true;
 }

@@ -6,9 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "MenuGameModeBase.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class FLAPPYBIRD_API AMenuGameModeBase : public AGameModeBase
 {

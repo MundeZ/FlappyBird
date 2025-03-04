@@ -6,9 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "LoseScreenGameModeBase.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class FLAPPYBIRD_API ALoseScreenGameModeBase : public AGameModeBase
 {

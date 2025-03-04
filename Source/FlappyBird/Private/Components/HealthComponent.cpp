@@ -24,13 +24,3 @@ float UHealthComponent::MinusHP(float Amount)
     Health -= Amount;
     return Health;
 }
-
-void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
-void UHealthComponent::BeginPlay()
-{
-    Super::BeginPlay();
-}
