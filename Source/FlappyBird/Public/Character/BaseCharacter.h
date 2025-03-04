@@ -27,7 +27,6 @@ public:
     void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
                         bool bFromSweep, const FHitResult& SweepResult);
-    void SaveNewScore(float NewScore);
     virtual void Tick(float DeltaTime) override;
     virtual void Jump() override;
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
@@ -41,7 +40,7 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UMovementComponent* MovementComponent;
-    
+
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USpringArmComponent* SpringArmComponent;
 
@@ -50,11 +49,12 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UHealthComponent* HealthComponent;
-    
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
     UBoxComponent* CollisionBox;
 
 private:
+    void SaveNewScore(float NewScore);
     ALevelGenerator* LevelGenerator;
     int32 JumpCount = 0;
 };
