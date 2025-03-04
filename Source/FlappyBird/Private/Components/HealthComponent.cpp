@@ -14,20 +14,23 @@ bool UHealthComponent::IsDead() const
     return FMath::IsNearlyZero(Health);
 }
 
-
-void UHealthComponent::BeginPlay()
+float UHealthComponent::GetHealth() const
 {
-    Super::BeginPlay();
+    return Health;
 }
 
+float UHealthComponent::MinusHP(float Amount)
+{
+    Health -= Amount;
+    return Health;
+}
 
 void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy,
-                                       AActor* DamageCauser)
+void UHealthComponent::BeginPlay()
 {
-
+    Super::BeginPlay();
 }

@@ -5,7 +5,11 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Levels/LevelGenerator.h"
 #include "EngineUtils.h"
+#include "Character/MyPlayerController.h"
 #include "Components/BoxComponent.h"
+#include "Components/HealthComponent.h"
+#include "Components/TextRenderComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
     ObjInit.SetDefaultSubobjectClass<UMyCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -16,6 +20,15 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
     FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("FlipbookComponent"));
     FlipbookComponent->SetupAttachment(RootComponent);
 
+    // Добавляем HealthComponent
+    HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+    HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
+    HealthTextComponent->SetupAttachment(RootComponent);
+    HealthTextComponent->SetOwnerNoSee(true);
+
+    UE_LOG(LogTemp, Log, TEXT("HealthComponent created in constructor: %s"), *GetName()); 
+
+    
     // Добавляем SpringArm
     SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
     SpringArmComponent->SetupAttachment(RootComponent);
@@ -42,6 +55,16 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjInit): Super(
 void ABaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
+    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+    if (PlayerController)
+    {
+        EnableInput(PlayerController);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("PlayerController not found!"));
+    }
 
     FlipbookComponent->SetSimulatePhysics(true);
     FlipbookComponent->SetEnableGravity(true);
@@ -103,12 +126,14 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+    SetInputMode(FInputModeUIOnly());
     check(PlayerInputComponent);
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABaseCharacter::Jump);
 }
 
 void ABaseCharacter::Jump()
 {
+    Super::Jump();
     const auto MovementComponent = Cast<UMyCharacterMovementComponent>(GetCharacterMovement());
     if (MovementComponent)
     {
@@ -119,7 +144,11 @@ void ABaseCharacter::Jump()
     {
         UE_LOG(LogTemp, Warning, TEXT("Cannot jump: character is falling."));
     }
-    Super::Jump();
+}
+
+void ABaseCharacter::SetInputMode(const FInputModeUIOnly& InputModeUIOnly)
+{
+
 }
 
 void ABaseCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -128,6 +157,22 @@ void ABaseCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 {
     if (OtherActor && OtherActor != this) // Проверяем, чтобы это не был сам персонаж
     {
-        UE_LOG(LogTemp, Warning, TEXT("HIT! Overlapped with: %s"), *OtherActor->GetName());
+        if (HealthComponent)
+        {
+            HealthComponent->MinusHP(1.0f);
+            if (!HealthComponent->IsDead()) return;
+            UE_LOG(LogTemp, Warning, TEXT("HIT! Overlapped with: %s"), *OtherActor->GetName());
+            if (HealthComponent->IsDead())
+            {
+                Destroy();
+                const FName LevelName = "LoseLevel";
+                UGameplayStatics::OpenLevel(GetWorld(), LevelName);
+                UE_LOG(LogTemp, Warning, TEXT("Flappy DEAD!"));
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("HealthComponent not found!"));
+        }
     }
 }

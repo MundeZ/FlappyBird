@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "MyPlayerController.generated.h"
+#include "MenuPlayerController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FLAPPYBIRD_API AMyPlayerController : public APlayerController
+class FLAPPYBIRD_API AMenuPlayerController : public APlayerController
 {
-	GENERATED_BODY()
-    
+    GENERATED_BODY()
 
+    virtual void BeginPlay() override;
 };

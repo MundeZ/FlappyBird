@@ -15,11 +15,9 @@ class FLAPPYBIRD_API UHealthComponent : public UActorComponent
 public:
     UHealthComponent();
 
-    float GetHealth() const;
     bool IsDead() const;
-    bool IsHealthFull() const;
-    bool IsHealthZero() const;
-
+    float GetHealth() const;
+    float MinusHP(float Amount);
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
@@ -29,9 +27,5 @@ protected:
     virtual void BeginPlay() override;
 
 private:
-    float Health = 100.0f;
-
-    UFUNCTION(Category="Health")
-    void OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy,
-                         AActor* DamageCauser);
+    float Health = 1.0f;
 };

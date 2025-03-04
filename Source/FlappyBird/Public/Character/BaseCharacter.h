@@ -4,12 +4,14 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
-// Предварительные декларации для указателей
+
 class ALevelGenerator;
+class UHealthComponent;
 class USpringArmComponent;
 class UPaperFlipbookComponent;
 class UCameraComponent;
-class UBoxComponent; // Не хватает объявления этого компонента в вашем коде
+class UBoxComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class FLAPPYBIRD_API ABaseCharacter : public ACharacter
@@ -24,9 +26,9 @@ public:
     void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
                         bool bFromSweep, const FHitResult& SweepResult);
-
     virtual void Tick(float DeltaTime) override;
     virtual void Jump() override;
+    void SetInputMode(const FInputModeUIOnly& InputModeUIOnly);
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 protected:
@@ -42,10 +44,15 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UHealthComponent* HealthComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UTextRenderComponent* HealthTextComponent;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
     UBoxComponent* CollisionBox;
 
 private:
-    // Генератор уровня
     ALevelGenerator* LevelGenerator;
 };
