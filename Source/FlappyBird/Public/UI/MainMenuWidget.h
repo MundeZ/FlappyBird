@@ -16,10 +16,16 @@ class FLAPPYBIRD_API UMainMenuWidget : public UUserWidget
 protected:
     UPROPERTY(meta=(BindWidget))
     UButton* StartGameButton;
-    
+
+    UPROPERTY(meta=(BindWidget))
+    UButton* ExitButton;
+
     virtual void NativeConstruct() override;
 
 private:
     UFUNCTION()
     void OnStartGame();
+
+    UFUNCTION()
+    void OnExit();
 };

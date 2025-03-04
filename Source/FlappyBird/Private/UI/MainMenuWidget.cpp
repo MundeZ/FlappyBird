@@ -17,6 +17,11 @@ void UMainMenuWidget::NativeConstruct()
         UE_LOG(LogTemp, Display, TEXT("Not found StartGameButton"))
     }
 
+    if (ExitButton)
+    {
+        ExitButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnExit);
+    }
+
 }
 
 void UMainMenuWidget::OnStartGame()
@@ -26,4 +31,17 @@ void UMainMenuWidget::OnStartGame()
 
     UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 
+}
+
+void UMainMenuWidget::OnExit()
+{
+    if (GetWorld())
+    {
+        UGameplayStatics::SetGamePaused(GetWorld(), false);
+        UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, false);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Display, TEXT("Not found World"))
+    }
 }

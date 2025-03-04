@@ -17,6 +17,15 @@ void ULoseScreenWidget::NativeConstruct()
     {
         UE_LOG(LogTemp, Display, TEXT("Not found RestartButton"))
     }
+
+    if (ExitButton)
+    {
+        ExitButton->OnClicked.AddDynamic(this, &ULoseScreenWidget::OnExit);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Display, TEXT("Not found ExitButton"))
+    }
 }
 
 void ULoseScreenWidget::OnRestart()
@@ -24,4 +33,14 @@ void ULoseScreenWidget::OnRestart()
     const FName LevelName = "NewMap";
 
     UGameplayStatics::OpenLevel(GetWorld(), LevelName);
+}
+
+void ULoseScreenWidget::OnExit()
+{
+    if (GetWorld())
+    {
+        UGameplayStatics::SetGamePaused(GetWorld(), false);
+        UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, false);
+    }
+
 }
